@@ -1,17 +1,18 @@
-# NodeJS Schema Rules
+# OpenAPI Generator
 
-[![NPM Downloads](https://img.shields.io/npm/dw/nodejs-schema-rules )](https://www.npmjs.com/package/nodejs-schema-rules)
-[![npm](https://img.shields.io/npm/v/nodejs-schema-rules)](https://www.npmjs.com/package/nodejs-schema-rules)
+
+[![NPM Downloads](https://img.shields.io/npm/dw/openapi-generator )](https://www.npmjs.com/package/openapi-generator)
+[![npm](https://img.shields.io/npm/v/openapi-generator)](https://www.npmjs.com/package/openapi-generator)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-The CLI tool automatically generates basic validation rules for popular libraries such as [JOI](https://www.npmjs.com/package/joi),    [ValidatorJS](https://www.npmjs.com/package/validatorjs) and [@vinejs/vine](https://www.npmjs.com/package/@vinejs/vine) rules based on your database table schema. These rules serve as a convenient starting point, allowing you to refine and enhance them to suit your specific needs.
+Open API Generator is a CLI tool that generates OpenAPI documentation based on database table schema. It also provides an endpoint for viewing the OpenAPI documentation in both Swagger UI and JSON formats.
 
 
 ## Installation
-Installing nodejs-schema-rules globally to access `ndVr` CLI 
+Installing openapi-generator globally to access `ndVr` CLI 
 ```bash
-npm install nodejs-schema-rules -g
-yarn add global nodejs-schema-rules
+npm install openapi-generator -g
+yarn add global openapi-generator
 ```
 Then run `ndVr init` for initialization of  `schema.config.js` file then modify as your requirement.
 
