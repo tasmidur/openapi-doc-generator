@@ -1,23 +1,23 @@
-# OpenAPI Generator
+# OpenAPI Document Generator
 
 
-[![NPM Downloads](https://img.shields.io/npm/dw/openapi-generator )](https://www.npmjs.com/package/openapi-generator)
-[![npm](https://img.shields.io/npm/v/openapi-generator)](https://www.npmjs.com/package/openapi-generator)
+[![NPM Downloads](https://img.shields.io/npm/dw/openapi-doc-generator )](https://www.npmjs.com/package/openapi-doc-generator)
+[![npm](https://img.shields.io/npm/v/openapi-doc-generator)](https://www.npmjs.com/package/openapi-doc-generator)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-Open API Generator is a CLI tool that generates OpenAPI documentation based on database table schema. It also provides an endpoint for viewing the OpenAPI documentation in both Swagger UI and JSON formats.
+OpenAPI Doc Generator is a CLI tool that generates OpenAPI documentation based on database table schema. It also provides an endpoint for viewing the OpenAPI documentation in both Swagger UI and JSON formats.
 
 
 ## Installation
-Installing openapi-generator globally to access `ndVr` CLI 
+Installing openapi-doc-generator globally to access `oasc` CLI 
 ```bash
-npm install openapi-generator -g
-yarn add global openapi-generator
+npm install openapi-doc-generator -g
+yarn add global openapi-doc-generator
 ```
-Then run `ndVr init` for initialization of  `schema.config.js` file then modify as your requirement.
+Then run `oasc init` for initialization of  `schema.config.js` file then modify as your requirement.
 
 ```bash
-ndVr init
+oasc init
 ```
 
 Modify the `schema.config.js`
@@ -51,7 +51,7 @@ module.exports = schemaConfig;
 
 ## Usage
 
-  The `ndVr joi -t my_table -db mysql -c column1,column2` command generates validation rules for a specified database table and its columns. It creates a validation rules based on the chosen validation libraries like `joi`, "validatorjs", "vine". The generated rules can be used to enforce data integrity and validate incoming requests in your application.
+  The `oasc joi -t my_table -db mysql -c column1,column2` command generates validation rules for a specified database table and its columns. It creates a validation rules based on the chosen validation libraries like `joi`, "validatorjs", "vine". The generated rules can be used to enforce data integrity and validate incoming requests in your application.
 
   Options:
   - -db, --database: Specify the type of database (e.g., `mysql`, `postgres`, `sqlite`).
@@ -63,13 +63,13 @@ module.exports = schemaConfig;
   - Generate rules for a MySQL table named `users` with columns `id` and `name`:
 
     ```bash
-    ndVr joi -t users -db mysql -c id,name
+    oasc joi -t users -db mysql -c id,name
     ```
 
   - Generate rules for a PostgreSQL table named `users` with a validation library `validatorJs`:
 
       ```bash
-    ndVr validatorJs -t users -db mysql -c id,name
+    oasc validatorJs -t users -db mysql -c id,name
       ```
   
   as same as for sqlite.
@@ -96,7 +96,7 @@ CREATE TABLE data_types (
 Now if you run:
 
 ```bash
-ndVr joi -db sqlite -t data_types
+oasc joi -db sqlite -t data_types
 ```
 
 You'll get:
@@ -123,7 +123,7 @@ ________________________________________________________________________________
 You can also explicitly specify the columns:
 
 ```bash
-ndVr joi -db sqlite -t data_types -c name,age
+oasc joi -db sqlite -t data_types -c name,age
 ```
 
 Which gives you:

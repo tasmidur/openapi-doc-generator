@@ -1,9 +1,9 @@
 {
-  "name": "openapi-generator",
+  "name": "openapi-doc-generator",
   "version": "v1.0.0-alpha",
   "description": "The CLI tool automatically generates basic openapi schema based on your database table schema!",
   "bin": {
-    "ndVr": "dist/cli.js"
+    "oasc": "dist/cli.js"
   },
   "main": "dist/cli.js",
   "scripts": {
@@ -20,24 +20,12 @@
     "testEnvironment": "node"
   },
   "keywords": [
-    "node",
-    "validatorjs",
-    "schema",
-    "nodejs-validation",
-    "dynamic-schema",
-    "dynamic-rules",
-    "dynamic-validation-rules",
-    "joi validation rules",
-    "validatorjs  validation rules",
-    "vineJs  validation rules",
-    "vinejs@vine  validation rules",
-    "mysql schema rules",
-    "postgres schema rules"
+    "convert", "swagger", "api", "js", "types", "openapi", "typescript"
   ],
   "author": "Md Tasmidur Rahman <tasmidurrahman@gmail.com> (https://tasmidur.netlify.app)",
   "repository": {
     "type": "git",
-    "url": "https://github.com/tasmidur/nodejs-validation-schema-rules.git"
+    "url": "https://github.com/tasmidur/openapi-doc-generator.git"
   },
   "license": "MIT",
   "dependencies": {
