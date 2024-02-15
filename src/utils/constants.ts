@@ -39,3 +39,50 @@ export const requestSchemaClassMap: IRequestSchemaClassMap = {
     [REQUEST_VALIDATION_TYPE_VALIDATORJS]: ValidatorJsRequestSchemaGenerator,
 }
 
+export const openapiDefaultConfig={
+  "v2":{
+     'paths':{
+
+      },
+      'definitions':{
+
+      },
+      'securityDefinitions':{
+
+      }
+  },
+  "v3":{
+    'paths':{
+
+    },
+    'components':{
+
+    },
+    'securityDefinitions':{
+
+    }
+  }
+}
+
+export const defaulResponse={
+  "200": {
+    "description": "",
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/Pet"
+        }
+      }
+    }
+  },
+  "default": {
+    "description": "Unexpected error",
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/ErrorModel"
+        }
+      }
+    }
+  }
+}

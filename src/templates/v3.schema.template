@@ -1,0 +1,27 @@
+{
+  #__SCHEMA__#: {
+    description: "#__SCHEMA__# Table Schema",
+    allOf: [
+      {
+        type: "object",
+        required: [
+          "id"
+        ],
+        properties: {
+          id: {
+            type: "integer",
+            format: "int64"
+          }
+        }
+      },
+      {
+        $ref: "#/components/schemas/#__SCHEMA__#RequestBody"
+      }
+    ]
+  },
+  #__SCHEMA__#RequestBody: {
+    type: "object",
+    required: #__REQUIRED_PROPERTIES__#,
+    properties: #__PROPERTIES__#
+  }
+}

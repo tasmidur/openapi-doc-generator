@@ -1,0 +1,230 @@
+{
+  /#__PATH__#: {
+    post: {
+      tags: [
+        "#__TAG__#"
+      ],
+      summary: "Create #__TAG__#",
+      description: "Create #__TAG__#",
+      operationId: "create#__TAG__#",
+      requestBody: {
+        description: "Created #__TAG__# object",
+        content: {
+          application/json: {
+            schema: {
+              $ref: "#/components/schemas/#__TAG__#RequestBody"
+            }
+          },
+          application/xml: {
+            schema: {
+              $ref: "#/components/schemas/#__TAG__#RequestBody"
+            }
+          },
+          application/x-www-form-urlencoded: {
+            schema: {
+              $ref: "#/components/schemas/#__TAG__#RequestBody"
+            }
+          }
+        }
+      },
+      responses: {
+        default: {
+          description: "Successful Response of #__TAG__#",
+          content: {
+            application/json: {
+              schema: {
+                $ref: "#/components/schemas/#__TAG__#"
+              }
+            },
+            application/xml: {
+              schema: {
+                $ref: "#/components/schemas/#__TAG__#"
+              }
+            }
+          }
+        }
+      }
+    },
+    get: {
+      tags: [
+        "#__TAG__#"
+      ],
+      summary: "Get #__TAG__# List",
+      description: "Get #__TAG__# List",
+      operationId: "Get#__TAG__#List",
+      parameters: [
+        {
+          name: "filter",
+          in: "query",
+          content: {
+            application/json: {
+              schema: {
+                $ref: "#/components/schemas/#__TAG__#"
+              }
+            }
+          }
+        }
+      ],
+      responses: {
+        200: {
+          description: "The collection Of #__TAG__#",
+          content: {
+            application/json: {
+              schema: {
+                type: "object",
+                $ref: "#/components/schemas/#__TAG__#"
+              }
+            },
+            application/xml: {
+              schema: {
+                $ref: "#/components/schemas/#__TAG__#"
+              }
+            }
+          }
+        },
+        400: {
+          description: "Invalid supplied"
+        },
+        default: {
+          description: "Successful Response of #__TAG__# will be string/json/other format"
+        }
+      }
+    }
+  },
+  /#__PATH__#/{id}: {
+    get: {
+      tags: [
+        "#__TAG__#"
+      ],
+      summary: "Get #__TAG__# #__TAG__#Id",
+      description: "Get #__TAG__# #__TAG__#Id",
+      operationId: "get#__TAG__#ById",
+      parameters: [
+        {
+          name: "id",
+          in: "path",
+          description: "The id that needs to be fetched",
+          required: true,
+          schema: {
+            type: "string"
+          }
+        }
+      ],
+      responses: {
+        200: {
+          description: "Return the single #__TAG__#",
+          content: {
+            application/json: {
+              schema: {
+                $ref: "#/components/schemas/#__TAG__#"
+              }
+            },
+            application/xml: {
+              schema: {
+                $ref: "#/components/schemas/#__TAG__#"
+              }
+            }
+          }
+        },
+        400: {
+          description: "Invalid supplied"
+        },
+        404: {
+          description: "#__TAG__# not found"
+        }
+      }
+    },
+    put: {
+      tags: [
+        "#__TAG__#"
+      ],
+      summary: "Update #__TAG__#",
+      description: "Update #__TAG__#",
+      operationId: "update#__TAG__#",
+      parameters: [
+        {
+          name: "id",
+          in: "path",
+          description: "id that need to be update",
+          required: true,
+          schema: {
+            type: "string"
+          }
+        }
+      ],
+      requestBody: {
+        description: "Update an Existent #__TAG__# in the Store",
+        content: {
+          application/json: {
+            schema: {
+              $ref: "#/components/schemas/#__TAG__#"
+            }
+          },
+          application/xml: {
+            schema: {
+              $ref: "#/components/schemas/#__TAG__#"
+            }
+          },
+          application/x-www-form-urlencoded: {
+            schema: {
+              $ref: "#/components/schemas/#__TAG__#"
+            }
+          }
+        }
+      },
+      responses: {
+        200: {
+          description: "Return the single #__TAG__#",
+          content: {
+            application/json: {
+              schema: {
+                $ref: "#/components/schemas/#__TAG__#"
+              }
+            },
+            application/xml: {
+              schema: {
+                $ref: "#/components/schemas/#__TAG__#"
+              }
+            }
+          }
+        },
+        400: {
+          description: "Invalid supplied"
+        },
+        404: {
+          description: "#__TAG__# not found"
+        },
+        default: {
+          description: "successful operation"
+        }
+      }
+    },
+    delete: {
+      tags: [
+        "#__TAG__#"
+      ],
+      summary: "Delete #__TAG__#",
+      description: "Delete #__TAG__#",
+      operationId: "delete#__TAG__#",
+      parameters: [
+        {
+          name: "id",
+          in: "path",
+          description: "The id that needs to be deleted",
+          required: true,
+          schema: {
+            type: "string"
+          }
+        }
+      ],
+      responses: {
+        400: {
+          description: "Invalid supplied"
+        },
+        404: {
+          description: "#__TAG__# not found"
+        }
+      }
+    }
+  }
+}

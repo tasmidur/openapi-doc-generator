@@ -2,8 +2,8 @@ import { config } from './config/config'
 import {
   schemaOperationClass
 } from './utils/constants'
-import { RequestSchemaGenerator } from './request-schema-generator'
-import { ITemplateSetting } from './contacts/TemplateSetting'
+import { RequestSchemaGenerator } from './doc-generator'
+import { ITemplateSetting } from './contacts/IOptions/'
 import { ISchemaOperationClassMap } from './contacts/SchemaOperationClassMap'
 import { successMessage } from './utils/messages'
 import * as path from 'path'
@@ -48,14 +48,14 @@ export class Executor {
   public async execute(): Promise<boolean> {
     try {
       const columnRules = await this.initializeSchemaOperation().generateColumnRules();
+
       const templateSetting: ITemplateSetting = {
-        fileName: this.requestFile,
+        model: this.requestFile,
         rules: columnRules,
-        templateType: this.templateType,
         stroreDir: null //this.stroreDir,
       }
 
-      const rules = new RequestSchemaGenerator(templateSetting).initializeRequestSchemaGenerator();
+      const rules = new RequestSchemaGenerator(templateSetting).generate();
        
       console.log('\n')
       console.log(

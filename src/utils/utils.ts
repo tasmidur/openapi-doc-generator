@@ -43,3 +43,21 @@ export const initSchema=async()=>{
   )
   storeFile(templateSource, "schema.config","/")
 }
+
+
+export const getVersion = (swaggerObject:any) => {
+  if (swaggerObject.asyncapi) {
+    return 'v4';
+  }
+
+  if (swaggerObject.openapi) {
+    return 'v3';
+  }
+
+  if (swaggerObject.swagger) {
+    return 'v2';
+  }
+
+  swaggerObject.swagger = '2.0';
+  return 'v2';
+};
