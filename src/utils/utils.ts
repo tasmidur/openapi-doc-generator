@@ -7,11 +7,15 @@ export function arrayIntersection<T>(arr1: T[], arr2: T[]): T[] {
   return [...set1].filter((value) => set2.has(value))
 }
 
-export function snakeToCamel(str: string) {
-  return str.replace(/_([a-z])/g, (match, letter) => letter.toUpperCase())
+export function snakeToCamel(str:string) {
+  return str.replace(/_([a-z])/g, function(match, letter) {
+      return letter.toUpperCase();
+  });
 }
+
+
 export function toTitleCase(str:string) {
-  return str.replace(/\w\S*/g, function(word) {
+  return snakeToCamel(str).replace(/\w\S*/g, function(word) {
     return word.charAt(0).toUpperCase() + word.substr(1).toLowerCase();
   });
 }

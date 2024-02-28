@@ -39,7 +39,7 @@ const schemaConfig = {
     },
     "servers": [
         {
-            "url": "http://faqstore.swagger.io/api",
+            "url": "http://localhost/api",
             "description": "The production API server",
             "variables": {
                 "port": {
@@ -59,43 +59,7 @@ const schemaConfig = {
               }
             
         }
-    ],
-    "security": {
-      "basic_auth": {
-        "type": "http",
-        "scheme": "basic"
-      },
-      "api_key": {
-        "type": "apiKey",
-        "name": "api_key",
-        "in": "header"
-      },
-      "jwt":{
-        "type": "http",
-        "scheme": "bearer",
-        "bearerFormat": "JWT"
-      },
-      "oauth2":{
-        "type": "oauth2",
-        "flows": {
-          "implicit": {
-            "authorizationUrl": "https://example.com/api/oauth/dialog",
-            "scopes": {
-              "write:pets": "modify in your account",
-              "read:pets": "read your"
-            }
-          },
-          "authorizationCode": {
-            "authorizationUrl": "https://example.com/api/oauth/dialog",
-            "tokenUrl": "https://example.com/api/oauth/token",
-            "scopes": {
-              "write:pets": "modify in your account",
-              "read:pets": "read your"
-            }
-          }
-        }
-      }
-    }
+    ]
 }
 };
 module.exports = schemaConfig;

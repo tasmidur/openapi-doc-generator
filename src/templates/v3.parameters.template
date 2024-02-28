@@ -3,7 +3,7 @@
     "name": "id",
     "in": "path",
     "description": "The UserId that needs to be fetched",
-    "required": false,
+    "required": true,
     "schema": {
       "type": "string"
     }
@@ -12,7 +12,6 @@
     "name": "offset",
     "in": "query",
     "description": "Number of items to skip before returning the results",
-    "required": false,
     "schema": {
       "type": "integer",
       "format": "int32",
@@ -24,13 +23,20 @@
     "name": "limit",
     "in": "query",
     "description": "Maximum number of items to return.",
-    "required": false,
     "schema": {
       "type": "integer",
       "format": "int32",
       "minimum": 10,
       "maximum": 100,
       "default": 10
+    }
+  },
+  "searchQueryParam": {
+    "name": "q",
+    "in": "query",
+    "description": "Search items",
+    "schema": {
+      "type": "string"
     }
   }
 }
