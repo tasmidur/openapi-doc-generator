@@ -1,6 +1,6 @@
 require("dotenv").config();
 const schemaConfig = {
-  defaultDatabase: 'sqlite',
+  defaultDatabase: 'mysql',
   databases: {
     postgres: {
       host: 'localhost',

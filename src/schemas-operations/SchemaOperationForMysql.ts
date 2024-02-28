@@ -1,4 +1,4 @@
-import { warningMessage } from '../utils/messages'
+import { errorMessage, warningMessage } from '../utils/messages'
 import { ConnectionConfig } from 'mysql2/promise';
 import { MySQLDatabase } from '../databases/MySQLDatabase';
 import { ISchemaOperation } from '../contacts/SchemaOperationClassMap';
@@ -40,57 +40,44 @@ export class SchemaOperationForMysql implements ISchemaOperation {
 
   private databaseConfig: ConnectionConfig;
   private database: MySQLDatabase;
-  private table: string;
-  private selectedColumns: string[];
-  private skipColumns: string[]
+  private table: [];
 
-
-  constructor(table: string, databaseConfig: ConnectionConfig, selectedColumns: string[], skipColumns: string[]) {
+  constructor(table: [], databaseConfig: ConnectionConfig) { 
     this.table = table;
     this.databaseConfig = databaseConfig;
     this.database = new MySQLDatabase(this.databaseConfig);
-    this.selectedColumns = selectedColumns;
-    this.skipColumns = skipColumns;
   }
 
-
-  private async getTableSchema(): Promise<any[]> {
+  public async generateColumnRules(): Promise<any> {
+    let rules:any={};
     await this.database.connect();
-    let schema: any[] = [];
     try {
-      const tableExist = await this.database.query(`SHOW TABLES LIKE '${this.table}';`)
-      if (!tableExist.length) {
-        throw new Error(warningMessage(`The ${String(this.table)} table is not exist!`))
+      let sql=`SELECT table_name FROM information_schema.tables WHERE table_schema = '${String(this.databaseConfig.database)}'`;
+      if(this.table.length){
+         sql +=` AND table_name in (${this.table.map(_it=>`"${_it}"`).join(',')})`;
       }
-      schema = (await this.database.query(`SHOW COLUMNS FROM ${String(this.table)}`)) ?? []
-    } catch (error: any) {
+      const tables = await this.database.query(sql) ?? [];
+      if (!tables.length) {
+        throw new Error(errorMessage(`There is no table exist!`))
+      }
+      for(let table of tables){
+        rules[table['TABLE_NAME']]=await this.getRules(table['TABLE_NAME']);
+      }
+      
+    }catch (error: any) {
       console.error(error.message)
     } finally {
       // Close the database connection
       await this.database.end();
     }
-    return schema;
+    return rules;
   }
 
-  public async generateColumnRules(): Promise<any> {
+  private async getRules(tableName:string): Promise<any> {
     const rules: IValidationSchema = {}
-    let tableSchema = await this.getTableSchema()
-
-    if (this.skipColumns.length || this.selectedColumns.length) {
-      tableSchema = tableSchema.filter(({ Field }) => {
-        return this.selectedColumns.length
-          ? this.selectedColumns.includes(Field)
-          : !this.skipColumns.includes(Field)
-      })
-    }  
+    let tableSchema = await this.getTableSchema(tableName)
     tableSchema.forEach(({ Field, Type, Null, Key, Default, Extra }) => {
-
-      if (Extra === 'auto_increment') {
-        return
-      }
-
       let columnRules = []
-
       let type = Type
 
       switch (true) {
@@ -155,5 +142,18 @@ export class SchemaOperationForMysql implements ISchemaOperation {
       rules[Field] = columnRules
     })
     return rules
+  }
+  private async getTableSchema(tableName:string): Promise<any[]> {
+    await this.database.connect();
+    let schema: any[] = [];
+    try {
+      schema = (await this.database.query(`SHOW COLUMNS FROM ${tableName}`)) ?? []
+    } catch (error: any) {
+      console.error(error.message)
+    } finally {
+      // Close the database connection
+      await this.database.end();
+    }
+    return schema;
   }
 }

@@ -2,75 +2,33 @@ import { config } from './config/config'
 import {
   schemaOperationClass
 } from './utils/constants'
-import { RequestSchemaGenerator } from './doc-generator'
-import { ITemplateSetting } from './contacts/IOptions/'
+import { DocGenerator } from './doc-generator'
 import { ISchemaOperationClassMap } from './contacts/SchemaOperationClassMap'
 import { successMessage } from './utils/messages'
 import * as path from 'path'
+import { IOptions } from './contacts/IOptions'
 
 export class Executor {
-  private table: string
+  private table: []
   private databaseType: (keyof ISchemaOperationClassMap)
   private databaseConfig: any
   private options: any
-  private skipColumns: string[] = []
-  private selectedColumns: string[] = []
-  private stroreDir: any;
-  private templateType: any;
-  private requestFile: any;
 
-  constructor(table: string, databaseType?: string, options?: any) {  
-    this.table = table
-    this.databaseType = databaseType ?? config.defaultDatabase
-    this.databaseConfig = config.databases[this.databaseType]
+  constructor(options: any) {  
     this.options = options;
-    this.skipColumns = config.skipColumns;
-    this.templateType = this.options?.validationSchemaType ?? config.validationSchemaType;
-    this.requestFile = this.table;
-    this.stroreDir = config?.requestValidatorPath??null;
-
-    if (this.options?.requestFile) {
-      const filePath = this.options?.requestFile;
-      this.requestFile = path.basename(filePath);
-      this.stroreDir = path.dirname(filePath);
-    }
-    if (
-      this.options &&
-      this.options?.columns &&
-      this.options.columns.length > 0
-    ) {
-      this.selectedColumns = this.options?.columns
-      this.skipColumns = this.skipColumns.filter((skipColumn:any) => !this.options?.columns.includes(skipColumn),
-      )
-    }
+    this.table = this.options?.table??[];
+    this.databaseType = this.options?.database ?? config.defaultDatabase
+    this.databaseConfig = config.databases[this.databaseType]
   }
 
   public async execute(): Promise<boolean> {
     try {
-      const columnRules = await this.initializeSchemaOperation().generateColumnRules();
-
-      const templateSetting: ITemplateSetting = {
-        model: this.requestFile,
-        rules: columnRules,
-        stroreDir: null //this.stroreDir,
+      const columnRules = await this.initializeSchemaOperation().generateColumnRules();     
+      const docGeneratorConfig:IOptions={
+         rules:columnRules,
+         stroreDir:"swagger-doc"
       }
-
-      const rules = new RequestSchemaGenerator(templateSetting).generate();
-       
-      console.log('\n')
-      console.log(
-        `🚀 Schema Base Validation rules for "${this.templateType}" generated! 🚀`,
-      )
-      console.log(
-        `Copy and paste these rules into your validation location, such as controller, form request, or any applicable place 😊`,
-      )
-      console.log(
-        '______________________________________________________________________________________________________________________',
-      )
-      console.log('\n')
-      console.log(successMessage(rules))
-      console.log('\n')
-
+      const doc=new DocGenerator(docGeneratorConfig).generate();
     } catch (error: any) {
       console.error(error.message)
     } finally {
@@ -81,7 +39,7 @@ export class Executor {
   private initializeSchemaOperation(): InstanceType<ISchemaOperationClassMap[keyof ISchemaOperationClassMap]> {
     const SchemaOperationClass = schemaOperationClass[this.databaseType]  
     if (SchemaOperationClass) {
-      return new SchemaOperationClass(this.table, this.databaseConfig, this.selectedColumns, this.skipColumns)
+      return new SchemaOperationClass(this.table, this.databaseConfig)
     } else {
       throw new Error(`Unsupported request validation type: ${this.databaseType}`)
     }

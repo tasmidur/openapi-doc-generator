@@ -1,0 +1,49 @@
+{
+  "/#__PATH__#": {
+    "post": {
+      "tags": [
+        "#__TAG__#"
+      ],
+      "summary": "Create #__TAG__#",
+      "description": "This can only be done by the logged in #__TAG__#.",
+      "operationId": "createUser",
+      "requestBody": {
+        "description": "Created #__TAG__# object",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/User"
+            }
+          },
+          "application/xml": {
+            "schema": {
+              "$ref": "#/components/schemas/User"
+            }
+          },
+          "application/x-www-form-urlencoded": {
+            "schema": {
+              "$ref": "#/components/schemas/User"
+            }
+          }
+        }
+      },
+      "responses": {
+        "default": {
+          "description": "successful operation",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

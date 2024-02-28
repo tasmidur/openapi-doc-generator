@@ -29,27 +29,18 @@ program
 })
 
 program
-  .addArgument(new Argument('<validation-library>', 'Specify the libraries such as joi, validatorJS and vine to generate basic validation rules (default is "joi")').choices([REQUEST_VALIDATION_TYPE_JOI, REQUEST_VALIDATION_TYPE_VALIDATORJS, REQUEST_VALIDATION_TYPE_VINE]).default(REQUEST_VALIDATION_TYPE_JOI))
-  .addOption(new Option('-db, --database <database>', 'Specify the database').choices([DATABASE_MYSQL, DATABASE_POSTGRES, DATABASE_SQLITE]))
-  .option('-c, --columns <columns>', 'Specify the column name of the table')
+  .command("generate")
   .option('-t, --table <table>', 'Specify the table name')
-  .action(async (schemaType,cmd) => {
+  .addOption(new Option('-db, --database <database>', 'Specify the database').choices([DATABASE_MYSQL, DATABASE_POSTGRES, DATABASE_SQLITE]))
+  .action(async (cmd) => {
     try {
-      const { table, database, columns = ""} = cmd;   
-      console.log(table,cmd);
-      
-      if(!table){
-        console.log(warningMessage("Specify the table name"))
-        return;
-      }
+      const { table="", database} = cmd;     
       const options = {
-        columns: columns.split(',').filter(Boolean),
-        validationSchemaType: schemaType,
-        requestFile:null,
+        table: table.split(',').filter(Boolean),
+        database:database
       };
-      
       // Execute the main logic
-      await new Executor(table, database, options).execute();
+      await new Executor(options).execute();
 
     } catch (error:any) {
       console.error(error.message);

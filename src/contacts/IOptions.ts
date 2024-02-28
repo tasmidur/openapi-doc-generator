@@ -1,5 +1,4 @@
 export interface IOptions {
-  model: string
-  rules: string[]
+  rules: {}
   stroreDir?: any
 }

@@ -10,6 +10,11 @@ export function arrayIntersection<T>(arr1: T[], arr2: T[]): T[] {
 export function snakeToCamel(str: string) {
   return str.replace(/_([a-z])/g, (match, letter) => letter.toUpperCase())
 }
+export function toTitleCase(str:string) {
+  return str.replace(/\w\S*/g, function(word) {
+    return word.charAt(0).toUpperCase() + word.substr(1).toLowerCase();
+  });
+}
 
 export function getClassName(value: any, format: string) {
   const classNameCammelCase = format.replace(/\{\{(\w+)\}\}/g, (match, key) => {
@@ -21,6 +26,7 @@ export function getClassName(value: any, format: string) {
 }
 
 export const buildTemplateContent = (template: string, replacements: any) => {
+  
   return Object.keys(replacements).reduce((result, key) => {
     const placeholder = `#__${key}__#`
     return result.replace(new RegExp(placeholder, 'g'), replacements[key])
@@ -46,18 +52,17 @@ export const initSchema=async()=>{
 
 
 export const getVersion = (swaggerObject:any) => {
-  if (swaggerObject.asyncapi) {
+  if (swaggerObject?.asyncapi) {
     return 'v4';
   }
 
-  if (swaggerObject.openapi) {
+  if (swaggerObject?.openapi) {
     return 'v3';
   }
 
-  if (swaggerObject.swagger) {
+  if (swaggerObject?.swagger) {
     return 'v2';
   }
 
-  swaggerObject.swagger = '2.0';
   return 'v2';
 };

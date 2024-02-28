@@ -53,10 +53,13 @@ export class SchemaOperationForPostgres {
     return schema?.rows??[];
   }
 
-  public async generateColumnRules(): Promise<any> {
+  public async generateColumnRules():Promise<any>{
+      
+  }
+
+  private async getRules(): Promise<any> {
     const rules: IValidationSchema = {}
     let tableSchema = await this.getTableSchema()
-
     if (this.skipColumns.length || this.selectedColumns.length) {
       tableSchema = tableSchema.filter(({ column_name }) => {
         return this.selectedColumns.length

@@ -10,7 +10,7 @@ dotenvConfig()
 
 if (fs.existsSync(configFilePath)) { 
 const schemaConfig = require(configFilePath)
-config = validateConfig(schemaConfig)
+config = schemaConfig; //validateConfig(schemaConfig)
 }else{
    if(process.argv.includes("init")){
     console.error(successMessage(`\n"schema-config.js" is generated on working directory. You need to modify\n`));  

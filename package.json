@@ -20,7 +20,13 @@
     "testEnvironment": "node"
   },
   "keywords": [
-    "convert", "swagger", "api", "js", "types", "openapi", "typescript"
+    "convert",
+    "swagger",
+    "api",
+    "js",
+    "types",
+    "openapi",
+    "typescript"
   ],
   "author": "Md Tasmidur Rahman <tasmidurrahman@gmail.com> (https://tasmidur.netlify.app)",
   "repository": {
@@ -32,6 +38,7 @@
     "commander": "^11.1.0",
     "mysql2": "^3.7.0",
     "pg": "^8.7.1",
+    "pluralize": "^8.0.0",
     "sqlite3": "^5.1.7"
   },
   "devDependencies": {
