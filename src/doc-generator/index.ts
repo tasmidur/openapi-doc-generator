@@ -1,4 +1,4 @@
-import { buildTemplateContent, getVersion, storeFile, toTitleCase } from '../utils/utils';
+import { buildTemplateContent, getVersion, storeFile, toTitleCase, toUrlFormat } from '../utils/utils';
 import { config } from '../config/config';
 import { IOptions } from '../contacts/IOptions'
 import * as fs from 'fs'
@@ -39,25 +39,25 @@ export class DocGenerator {
     openapi = {
       ...openapi,
       paths: this.preparePath(),
-      components:{
-          parameters:this.prepareParameter(),
-          schemas:this.prepareSchema()
+      components: {
+        parameters: this.prepareParameter(),
+        schemas: this.prepareSchema()
       }
     }
-    const storeFileAsJson=JSON.stringify(openapi,null,2);
-    storeFile(storeFileAsJson,"openapi.v3","openapi","json");
+    const storeFileAsJson = JSON.stringify(openapi, null, 2);
+    storeFile(storeFileAsJson, "openapi", this.path, "json");
   }
 
   private prepareSchema() {
-    let schema={};
+    let schema = {};
     Object.keys(this.rules).forEach((element) => {
       let properties: any = {};
       let requiredField: any = [];
-      
+
       let columnRules = (this.rules as any)[element];
       Object.keys(columnRules).forEach((columnName: any) => {
 
-        if(columnName==='id'){
+        if (columnName === 'id') {
           return;
         }
 
@@ -71,12 +71,12 @@ export class DocGenerator {
         (properties as any)[columnName] = parsedValue.properties;
       });
 
-      if(Object.keys(properties).length>0){
+      if (Object.keys(properties).length > 0) {
         let generatedSchema = buildTemplateContent(this.schemaTemplate,
           {
             SCHEMA: toTitleCase(element),
-            REQUIRED_PROPERTIES: JSON.stringify(requiredField,null,2),
-            PROPERTIES:JSON.stringify(properties,null,2)
+            REQUIRED_PROPERTIES: JSON.stringify(requiredField, null, 2),
+            PROPERTIES: JSON.stringify(properties, null, 2)
           }
         )
         schema = {
@@ -86,7 +86,7 @@ export class DocGenerator {
           }
         }
       }
-      
+
     });
     return schema;
   }
@@ -137,9 +137,9 @@ export class DocGenerator {
           }
           break
         }
-        case  /^in:/.test(_item):
+        case /^in:/.test(_item):
           const value = _item.split(':')[1].split(",");
-          if (value.length>0&& properties.type === 'string' && properties.format !== 'date') {
+          if (value.length > 0 && properties.type === 'string' && properties.format !== 'date') {
             (properties as any)["enum"] = value;
           }
           break
@@ -157,12 +157,13 @@ export class DocGenerator {
   private prepareParameter(): any {
     return JSON.parse(this.parametherTemplate)
   }
+
   private preparePath(): any {
     let path = {};
     Object.keys(this.rules).forEach((element) => {
       let generatedPath = buildTemplateContent(this.pathTemplate,
         {
-          PATH: element.toLowerCase(),
+          PATH: toUrlFormat(element),
           TAG: toTitleCase(element),
         }
       )

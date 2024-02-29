@@ -21,7 +21,7 @@ const schemaConfig = {
   skipColumns: [ 'created_at', 'updated_at', 'deleted_at' ],
   validationSchemaType: 'joi',
   openApiConfig:{
-    "openapi": "3.0.0",
+    "openapi": "3.1",
     "info": {
         "version": "1.0.0",
         "title": "Swagger Faqstore",

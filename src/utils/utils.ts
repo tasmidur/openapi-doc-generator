@@ -1,5 +1,6 @@
 import * as fs from 'fs'
 import * as path from 'path'
+import pluralize from 'pluralize';
 
 export function arrayIntersection<T>(arr1: T[], arr2: T[]): T[] {
   const set1 = new Set(arr1)
@@ -13,11 +14,26 @@ export function snakeToCamel(str:string) {
   });
 }
 
-
 export function toTitleCase(str:string) {
-  return snakeToCamel(str).replace(/\w\S*/g, function(word) {
-    return word.charAt(0).toUpperCase() + word.substr(1).toLowerCase();
+  // Replace underscores and capitalize each word
+  let formattedString = str.replace(/_([a-z])/g, function(match, p1) {
+    return p1.toUpperCase();
   });
+  // Capitalize the first letter
+  formattedString = formattedString.charAt(0).toUpperCase() + formattedString.slice(1);
+  return toSingular(formattedString);
+}
+
+export function toUrlFormat(str:string){
+   return toPlural(str).replace(/_/g, "-").toLowerCase();
+}
+
+export function toSingular(str:string){
+  return pluralize.singular(str);
+}
+
+export function toPlural(str:string){
+  return pluralize.plural(str);
 }
 
 export function getClassName(value: any, format: string) {

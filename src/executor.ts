@@ -26,7 +26,7 @@ export class Executor {
       const columnRules = await this.initializeSchemaOperation().generateColumnRules();     
       const docGeneratorConfig:IOptions={
          rules:columnRules,
-         stroreDir:"swagger-doc"
+         stroreDir:"openapi-doc"
       }
       const doc=new DocGenerator(docGeneratorConfig).generate();
     } catch (error: any) {
