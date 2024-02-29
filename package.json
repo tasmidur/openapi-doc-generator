@@ -1,5 +1,5 @@
 {
-  "name": "@dev/openapi-from-database",
+  "name": "openapi-from-database-dev",
   "version": "v1.0.1-alpha",
   "description": "The CLI tool automatically generates basic openapi schema based on your database table schema!",
   "bin": {
