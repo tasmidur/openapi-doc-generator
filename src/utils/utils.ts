@@ -62,6 +62,7 @@ export function storeFile(content: any, fileName: any, directory: string,extenti
   return fs.writeFileSync(`${fullPath}/${fileName}.${extention}`, content)
 }
 
+
 export const initSchema=async()=>{
   const templateSource = fs.readFileSync(
     path.resolve(__dirname, '../templates/schema.config.template'),

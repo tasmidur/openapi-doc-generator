@@ -14,18 +14,18 @@ const schemaConfig = {
       port: 3306,
       user: 'root',
       password: '123456',
-      database: 'schema_builder'
+      database: 'smar_office_2024'
     },
     sqlite: { database: './schema_builder.db' }
   },
   skipColumns: [ 'created_at', 'updated_at', 'deleted_at' ],
   validationSchemaType: 'joi',
   openApiConfig:{
-    "openapi": "3.1",
+    "openapi": "3.0.0",
     "info": {
         "version": "1.0.0",
-        "title": "Swagger Faqstore",
-        "description": "A sample API that uses a faqstore as an example to demonstrate features in the OpenAPI 3.0 specification",
+        "title": "OpenAPI 3.0 specification from database schema",
+        "description": "A basic OpenAPI 3.0 specification from database schema",
         "termsOfService": "http://swagger.io/terms/",
         "contact": {
             "name": "Swagger API Team",
