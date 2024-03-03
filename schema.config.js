@@ -40,24 +40,7 @@ const schemaConfig = {
     "servers": [
         {
             "url": "http://localhost/api",
-            "description": "The production API server",
-            "variables": {
-                "port": {
-                  "enum": [
-                    "8000",
-                    "3000"
-                  ],
-                  "default": "8000"
-                },
-                "basePath": {
-                    "enum":[
-                        "v1",
-                        "v2"
-                    ],
-                  "default": "v1"
-                }
-              }
-            
+            "description": "The API server",
         }
     ]
 }
