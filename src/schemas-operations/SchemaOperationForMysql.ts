@@ -1,4 +1,4 @@
-import { errorMessage, warningMessage } from '../utils/messages'
+import { errorMessage } from '../utils/messages';
 import { ConnectionConfig } from 'mysql2/promise';
 import { MySQLDatabase } from '../databases/MySQLDatabase';
 import { ISchemaOperation } from '../contacts/SchemaOperationClassMap';

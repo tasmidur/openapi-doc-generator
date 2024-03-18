@@ -1,9 +1,9 @@
 {
-  "name": "openapi-from-database-dev",
-  "version": "v1.0.1-alpha",
+  "name": "openapi-doc-from-database-dev",
+  "version": "v1.0.3-alpha",
   "description": "The CLI tool automatically generates basic openapi schema based on your database table schema!",
   "bin": {
-    "openapiCli": "dist/cli.js"
+    "OAD": "dist/cli.js"
   },
   "main": "dist/cli.js",
   "scripts": {

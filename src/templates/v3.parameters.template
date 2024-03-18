@@ -9,9 +9,9 @@
     }
   },
   "offsetParam": {
-    "name": "offset",
+    "name": "page",
     "in": "query",
-    "description": "Number of items to skip before returning the results",
+    "description": "Number of page to return.",
     "schema": {
       "type": "integer",
       "format": "int32",
@@ -34,7 +34,7 @@
   "searchQueryParam": {
     "name": "q",
     "in": "query",
-    "description": "Search items",
+    "description": "Search query parameters",
     "schema": {
       "type": "string"
     }

@@ -3,6 +3,7 @@ import { IValidationSchema } from '../contacts/ValidationRule'
 import { PostgresDatabase } from '../databases/PostgresDatabase';
 import { ClientConfig } from 'pg';
 
+
 export class SchemaOperationForPostgres {
   public integerTypes: any = {
     smallint: { min: '-32768', max: '32767' },
@@ -12,74 +13,54 @@ export class SchemaOperationForPostgres {
 
   private databaseConfig: ClientConfig;
   private database: PostgresDatabase;
-  private table: string;
-  private selectedColumns: string[];
-  private skipColumns: string[]
+  private table: [];
 
-
-  constructor(table: string, databaseConfig: ClientConfig, selectedColumns: string[], skipColumns: string[]) {
+  constructor(table: [], databaseConfig: ClientConfig) {
     this.table = table;
     this.databaseConfig = databaseConfig;
     this.database = new PostgresDatabase(this.databaseConfig);
-    this.selectedColumns = selectedColumns;
-    this.skipColumns = skipColumns;
   }
 
-  private async getTableSchema(): Promise<any[]> {
-    await this.database.connect();
-    let schema: any;
-    try {
-      const tableExist = await this.database.query(
-        `SELECT COUNT(table_name) as total_table FROM information_schema.tables WHERE table_name = '${this.table}';`,
-      )
-      if (tableExist.rows[0]?.total_table==undefined||tableExist.rows[0]?.total_table=='0') {
-        throw new Error(errorMessage(`The ${this.table} table is not exist!`))
-      }
-      schema = await this.database.query(`
-                      SELECT table_name,column_name, data_type, character_maximum_length, is_nullable, column_default
-                      FROM 
-                      information_schema.columns
-                      WHERE 
-                      table_name = '${this.table}' 
-                      ORDER BY ordinal_position ASC;
-          `);  
 
-    } catch (error: any) {
+  public async generateColumnRules(): Promise<any> {
+    let rules:any={};
+    await this.database.connect();
+    try {
+      let sql=`SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' AND table_type = 'BASE TABLE' AND table_catalog='${String(this.databaseConfig.database)}'`;
+      if(this.table.length){
+        sql +=` AND table_name in (${this.table.map(_it=>`'${_it}'`).join(',')})`;
+      }
+      const tables = await this.database.query(sql) ?? [];
+      if (!tables.rows.length) {
+        throw new Error(errorMessage(`There is no table exist!`))
+      }
+      
+      for(let table of tables.rows){
+        if(table['table_name']){
+          rules[table['table_name']]=await this.getRules(table['table_name']);
+        }
+        
+      }
+    }catch (error: any) {
       console.error(error.message)
     } finally {
       // Close the database connection
       await this.database.end();
     }
-    return schema?.rows??[];
+    return rules;
   }
 
-  public async generateColumnRules():Promise<any>{
-      
-  }
-
-  private async getRules(): Promise<any> {
+  private async getRules(tableName:string): Promise<any> {
     const rules: IValidationSchema = {}
-    let tableSchema = await this.getTableSchema()
-    if (this.skipColumns.length || this.selectedColumns.length) {
-      tableSchema = tableSchema.filter(({ column_name }) => {
-        return this.selectedColumns.length
-          ? this.selectedColumns.includes(column_name)
-          : !this.skipColumns.includes(column_name)
-      })
-    }
-
+    let tableSchema = await this.getTableSchema(tableName)
     tableSchema.forEach(
       ({
-        table_name,
         column_name,
         data_type,
         character_maximum_length,
         is_nullable,
-        column_default
       }) => {
-        if (column_default&&column_default.includes('nextval')) {
-          return;
-        }
+       
 
         let columnRules = []
         let type = data_type
@@ -122,4 +103,27 @@ export class SchemaOperationForPostgres {
     )
     return rules
   }
+
+  private async getTableSchema(tableName:string): Promise<any[]> {
+    //await this.database.connect();
+    let schema: any;
+    try {
+      schema = await this.database.query(`
+                      SELECT table_name,column_name, data_type, character_maximum_length, is_nullable, column_default
+                      FROM 
+                      information_schema.columns
+                      WHERE 
+                      table_name = '${tableName}' 
+                      ORDER BY ordinal_position ASC;
+          `);
+
+    } catch (error: any) {
+      console.error(error.message)
+    } finally {
+      // Close the database connection
+      //await this.database.end();
+    }
+    return schema?.rows??[];
+  }
+
 }

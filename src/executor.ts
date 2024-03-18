@@ -4,8 +4,6 @@ import {
 } from './utils/constants'
 import { DocGenerator } from './doc-generator'
 import { ISchemaOperationClassMap } from './contacts/SchemaOperationClassMap'
-import { successMessage } from './utils/messages'
-import * as path from 'path'
 import { IOptions } from './contacts/IOptions'
 
 export class Executor {

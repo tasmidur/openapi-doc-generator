@@ -1,6 +1,6 @@
 require("dotenv").config();
 const schemaConfig = {
-  defaultDatabase: 'mysql',
+  defaultDatabase: 'sqlite',
   databases: {
     postgres: {
       host: 'localhost',
@@ -18,8 +18,6 @@ const schemaConfig = {
     },
     sqlite: { database: './schema_builder.db' }
   },
-  skipColumns: [ 'created_at', 'updated_at', 'deleted_at' ],
-  validationSchemaType: 'joi',
   openApiConfig:{
     "openapi": "3.0.0",
     "info": {

@@ -1,18 +1,15 @@
 #!/usr/bin/env ts-node
 
-import { Argument, Option, program } from 'commander';
+import { Option, program } from 'commander';
 import { Executor } from './executor';
 import { config as dotenvConfig } from 'dotenv';
 import {
   DATABASE_MYSQL,
   DATABASE_POSTGRES,
   DATABASE_SQLITE,
-  REQUEST_VALIDATION_TYPE_VINE,
-  REQUEST_VALIDATION_TYPE_JOI,
-  REQUEST_VALIDATION_TYPE_VALIDATORJS,
 } from './utils/constants';
 import { initSchema } from './utils/utils';
-import { successMessage, warningMessage } from './utils/messages';
+
 
 // Load environment variables from a .env file if present
 dotenvConfig();
@@ -57,3 +54,7 @@ program.on('--help', () => {
 
 // Parse the command line arguments
 program.parse(process.argv);
+
+/**
+ * chmod +x dist/cli.js
+ */

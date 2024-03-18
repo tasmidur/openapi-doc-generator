@@ -9,53 +9,46 @@ export class SchemaOperationForSqlite {
 
   private databaseConfig: any;
   private database: SqliteDatabase;
-  private table: string;
-  private selectedColumns: string[];
-  private skipColumns: string[]
+  private table: [];
 
-
-  constructor(table: string, databaseConfig: any, selectedColumns: string[], skipColumns: string[]) {
+  constructor(table: [], databaseConfig: any) { 
     this.table = table;
     this.databaseConfig = databaseConfig;
     this.database = new SqliteDatabase(this.databaseConfig);
-    this.selectedColumns = selectedColumns;
-    this.skipColumns = skipColumns;
   }
 
-  private async getTableSchema(): Promise<any[]> {
+  public async generateColumnRules(): Promise<any> {
+    let rules:any={};
     await this.database.connect();
-    let schema: any[] = [];
     try {
-      const tableExist = await this.database.query(`SELECT name FROM sqlite_master WHERE type='table' AND name='${this.table}';`) 
-      if (!tableExist.length) {
-        throw new Error(errorMessage(`The ${this.table} table is not exist!`))
+      let sql=`SELECT name FROM sqlite_master WHERE type='table'`;
+      if(this.table.length){
+         sql +=` AND name in (${this.table.map(_it=>`'${_it}'`).join(',')})`;
       }
-      schema= (await this.database.query(`PRAGMA table_info('${this.table}')`)) ?? []
-    } catch (error: any) {
+      const tables = await this.database.query(sql) ?? [];
+     
+      if (!tables.length) {
+        throw new Error(errorMessage(`There is no table exist!`))
+      }
+      for(let table of tables){
+        if(table['name']){
+          rules[table['name']]=await this.getRules(table['name']);
+        }
+      }
+      
+    }catch (error: any) {
       console.error(error.message)
     } finally {
       // Close the database connection
       await this.database.end();
     }
-    return schema;
+    return rules;
   }
 
-  public async generateColumnRules(): Promise<any> {
+  private async getRules(tableName:string): Promise<any> {
     const rules: IValidationSchema = {}
-    let tableSchema = await this.getTableSchema();   
-    if (this.skipColumns.length || this.selectedColumns.length) {
-      tableSchema = tableSchema.filter(({ name }) => {
-        return this.selectedColumns.length
-          ? this.selectedColumns.includes(name)
-          : !this.skipColumns.includes(name)
-      })
-    }
-
+    let tableSchema = await this.getTableSchema(tableName); 
     tableSchema.forEach(({ name, type, notnull, dflt_value, pk }) => {
-      if (Boolean(pk)) {
-        return
-      }
-
       let columnRules = []
       let dataType = type.toLowerCase()
 
@@ -93,5 +86,19 @@ export class SchemaOperationForSqlite {
       rules[name] = columnRules
     })
     return rules
+  }
+
+  private async getTableSchema(tableName:string): Promise<any[]> {
+    //await this.database.connect();
+    let schema: any[] = [];
+    try {
+      schema= (await this.database.query(`PRAGMA table_info('${tableName}')`)) ?? []
+    } catch (error: any) {
+      console.error(error.message)
+    } finally {
+      // Close the database connection
+     // await this.database.end();
+    }
+    return schema;
   }
 }

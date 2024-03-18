@@ -19,8 +19,8 @@ export const DATABASE_SQLITE="sqlite";
 
 export const schemaOperationClass: ISchemaOperationClassMap = {
     [DATABASE_MYSQL]:SchemaOperationForMysql,
-    // [DATABASE_POSTGRES]:SchemaOperationForPostgres,
-    // [DATABASE_SQLITE]:SchemaOperationForSqlite,
+    [DATABASE_POSTGRES]:SchemaOperationForPostgres,
+    [DATABASE_SQLITE]:SchemaOperationForSqlite,
   }
 
 export const databaseClassMap:IDatabaseBaseClassMap={
